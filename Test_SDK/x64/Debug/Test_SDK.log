@@ -1,0 +1,14 @@
+﻿Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __cdecl VHand30::VHand30(void)" (__imp_??0VHand30@@QEAA@XZ) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::SetConnectionParameters(int,char *)" (__imp_?SetConnectionParameters@VHand30@@QEAAHHPEAD@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::Connect(int,int)" (__imp_?Connect@VHand30@@QEAAHHH@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::Disconnect(void)" (__imp_?Disconnect@VHand30@@QEAAHXZ) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetConnectionStatus(void)" (__imp_?GetConnectionStatus@VHand30@@QEAAHXZ) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetID(char *,int *)" (__imp_?GetID@VHand30@@QEAAHPEADPEAH@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetFWVersion(int *,int *,int *)" (__imp_?GetFWVersion@VHand30@@QEAAHPEAH00@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetWiFiSettings(char *,char *,char *,int *)" (__imp_?GetWiFiSettings@VHand30@@QEAAHPEAD00PEAH@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetAPNSettings(char *,char *)" (__imp_?GetAPNSettings@VHand30@@QEAAHPEAD0@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetFingers(double *)" (__imp_?GetFingers@VHand30@@QEAAHPEAN@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::GetAttitude(double *,double *,double *)" (__imp_?GetAttitude@VHand30@@QEAAHPEAN00@Z) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: unsigned int __cdecl VHand30::GetLastPackageTime(void)" (__imp_?GetLastPackageTime@VHand30@@QEAAIXZ) referenced in function wmain
+Test_SDK.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: int __cdecl VHand30::TurnOFF(int)" (__imp_?TurnOFF@VHand30@@QEAAHH@Z) referenced in function wmain
+C:\Users\Chris Sheng\Documents\Robotic Arm Internship\Test_SDK_VS2013\Test_SDK_VS2013\x64\Debug\Test_SDK.exe : fatal error LNK1120: 13 unresolved externals
