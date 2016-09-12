@@ -1,6 +1,8 @@
+#include "stdafx.h"
+
 #include "SerialClass.h"
 
-Serial::Serial(char *portName)
+Serial::Serial(LPCWSTR portName)
 {
     //We're not yet connected
     this->connected = false;

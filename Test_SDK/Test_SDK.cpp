@@ -190,7 +190,7 @@ int _tmain(int argc, _TCHAR* argv[])
   smallEmgSensorDataFile << std::setprecision(3);
 
   // set up serial reading
-  Serial* SP = new Serial("\\\\.\\COM8");
+  Serial* SP = new Serial(L"\\\\.\\COM8");
   char incomingData[256] = ""; // don't forget to pre-allocate memory
   //printf("%s\n",incomingData);
   int dataLength = 255;
@@ -216,24 +216,45 @@ int _tmain(int argc, _TCHAR* argv[])
       myfile2 << fing[1] << " " << fing[3] << " ";
       //fprintf(stderr,"ROLL:%.1f PITCH:%.1f YAW:%.1f\n",roll,pitch,yaw);
     }
-    if (SP->IsConnected()) {
-      readResult = SP->ReadData(incomingData,dataLength);
-      // printf("Bytes read: (0 means no data available) %i\n",readResult);
-      incomingData[readResult] = 0;
-      string str(incomingData);
-      istringstream stream(str);
-      string line;
-      if (getline(stream, line)) {
-        smallEmgSensorDataFile << line;
-      }
 
+	// read from small emg sensors
+	int enoughSmallEmgData = 0;
+	string line = "";
+    if (SP->IsConnected()) {
+
+		readResult = SP->ReadData(incomingData, dataLength);
+		// TODO make this read cleaner
+		// printf("Bytes read: (0 means no data available) %i\n",readResult);
+		if (readResult) {
+			int i = 0;
+			while (incomingData[i] != '\n' && i < readResult) {
+				i++;
+			}
+			i++;
+
+			int count = 0;
+			while (incomingData[i] != '\n' && i < readResult) {
+				if (incomingData[i] == ' ') {
+					count++;
+				}
+				line += incomingData[i];
+				i++;
+			}
+			if (incomingData[i] == '\n' && count == 3) {
+				enoughSmallEmgData = 1;
+			}
+		}
     }
     collector.print();
     timeElasped = timeElasped + ((double)(clock() - tictoc_stack.top())) / CLOCKS_PER_SEC;
     tictoc_stack.pop();
     myfile << timeElasped << endl;
     myfile2 << timeElasped << endl;
-    smallEmgSensorDataFile << timeElasped << endl;
+	if (enoughSmallEmgData) {
+		line = line + " ";
+		smallEmgSensorDataFile << line;
+		smallEmgSensorDataFile << timeElasped << endl;
+	}
   }
   myfile.close();
   //disconnect socket
