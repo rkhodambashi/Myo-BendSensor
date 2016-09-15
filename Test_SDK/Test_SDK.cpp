@@ -195,9 +195,13 @@ int _tmain(int argc, _TCHAR* argv[])
   //printf("%s\n",incomingData);
   int dataLength = 255;
   int readResult = 0;
-  int on = 0;
+  int enoughSmallEmgData = 0;
+  string line = "";
+  string buffer = "";
+  int firstWrite = 1;
 
   //while ((::GetTickCount()-start)<10000){
+
   while (1) {
     //Sleep(100);
     collector.tic();
@@ -218,56 +222,41 @@ int _tmain(int argc, _TCHAR* argv[])
       //fprintf(stderr,"ROLL:%.1f PITCH:%.1f YAW:%.1f\n",roll,pitch,yaw);
     }
 
-	// read from small emg sensors
-	int enoughSmallEmgData = 0;
-	string line = "";
-    if (SP->IsConnected() && on) {
+	enoughSmallEmgData = 0;
+	// read from small EMG sensors
+    if (SP->IsConnected()) {
 		readResult = SP->ReadData(incomingData, dataLength);
 		incomingData[readResult] = 0;
 		// TODO make this read cleaner
 		//printf("Bytes read: (0 means no data available) %i\n",readResult);
-		printf("%s\n", incomingData);
-		//on = 0;
+		//printf("%s\n", incomingData);
 		if (readResult) {
 			int i = 0;
-			while (incomingData[i] != '\n' && i < readResult) {
+			while (i < readResult) {
+				if (incomingData[i] == '\n' && buffer.size() > 1) {
+					enoughSmallEmgData = 1;
+					line = buffer;
+					buffer = "";
+				}
+				buffer = buffer + incomingData[i];
 				i++;
-			}
-			i++;
-
-			int spaceCount = 0;
-			int numCount = 0;
-			char prev = ' ';
-			int error = 0;
-			while (incomingData[i] != '\n' && i < readResult) {
-				/*if (incomingData[i] == ' ' && prev != ' ') {
-					spaceCount++;
-					prev = ' ';
-				} else if (incomingData[i] == ' ' && prev == ' ') {
-					error = 1;
-				} else if (incomingData[i] != ' ' && prev == ' ') {
-					numCount++;
-					prev = '1';
-				}			*/	
-				line += incomingData[i];
-				i++;
-			}
-			if (incomingData[i] == '\n') { // && spaceCount == 3 && numCount == 4 && !error) {
-				enoughSmallEmgData = 1;
 			}
 		}
-	} else {
-		on = 1;
 	}
     collector.print();
     timeElasped = timeElasped + ((double)(clock() - tictoc_stack.top())) / CLOCKS_PER_SEC;
     tictoc_stack.pop();
     myfile << timeElasped << endl;
     myfile2 << timeElasped << endl;
-	if (enoughSmallEmgData) {
+	if (enoughSmallEmgData && line.size() > 1) {
 		line = line + " ";
+		if (firstWrite) {
+			line.erase(0, 1);
+			firstWrite = 0;
+		}
 		smallEmgSensorDataFile << line;
-		smallEmgSensorDataFile << timeElasped << endl;
+		smallEmgSensorDataFile << timeElasped;
+		line = "";
 	}
   }
   myfile.close();
